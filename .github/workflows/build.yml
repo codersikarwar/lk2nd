@@ -1,5 +1,9 @@
 name: Build
-on: [push, pull_request]
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:   # ← Added so you can run it manually from the Actions tab
 
 jobs:
   # Build lk2nd-msm8916 separately first to avoid booting lots of runners
@@ -13,12 +17,13 @@ jobs:
       artifacts: |
         build-*/lk.bin
         build-*/lk2nd.img
+
   lk2nd:
     needs: lk2nd-msm8916
     uses: ./.github/workflows/lk2nd-matrix.yml
     with:
       project: lk2nd
-      exclude: msm8916  # Already built separately above
+      exclude: msm8916
       artifacts: |
         build-*/lk.bin
         build-*/lk2nd.img
